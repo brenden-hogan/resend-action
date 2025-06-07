@@ -27405,22 +27405,37 @@ try {
     const cc = parseArrayString(_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('cc-array'), true);
     const text = parseString(_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('text', true));
     const html = parseString(_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('html'), true);
+    const sendToSeparately = (_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('send-to-separately').trim.toLowerCase() === 'true');
     const resend = new resend__WEBPACK_IMPORTED_MODULE_0__/* .Resend */ .u(resendApiKey);
 
     if (text && html) {
         throw new Error("Only text or html can be set but both are set.");
     }
 
-    await resend.emails.send({
-    from: `${sender}@${fromDomain}`,
-    to: to,
-    cc: cc,
-    bcc: bcc,
-    replyTo: replyTo,
-    subject: subject,
-    text: text,
-    html: html
-    });
+    if (sendToSeparately) {
+      for (const email in to) {
+        console.log(`Emailing ${email}`);
+        await resend.emails.send({
+          from: `${sender}@${fromDomain}`,
+          to: to,
+          replyTo: replyTo,
+          subject: subject,
+          text: text,
+          html: html
+       });  
+      }
+    } else {
+      await resend.emails.send({
+        from: `${sender}@${fromDomain}`,
+        to: to,
+        cc: cc,
+        bcc: bcc,
+        replyTo: replyTo,
+        subject: subject,
+        text: text,
+        html: html
+      });
+    }
 } catch (error) {
   _actions_core__WEBPACK_IMPORTED_MODULE_1__.setFailed(error.message);
 }
