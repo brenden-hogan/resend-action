@@ -18,6 +18,10 @@ inputs:
   to-array:
     description: 'Who to send the email to, at least one is required but multiple separated by commas can be provided.'
     required: true
+  send-to-separately:
+    description: 'If set to true then emails in the to array will each receive a separate email. BCC and CC are ignored in this case'
+    required: true
+    default: "false"
   reply-to-array:
     description: 'Comma separated reply-to list.'
     required: false

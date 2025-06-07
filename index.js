@@ -12,22 +12,37 @@ try {
     const cc = parseArrayString(core.getInput('cc-array'), true);
     const text = parseString(core.getInput('text', true));
     const html = parseString(core.getInput('html'), true);
+    const sendToSeparately = (core.getInput('send-to-separately').trim.toLowerCase() === 'true');
     const resend = new Resend(resendApiKey);
 
     if (text && html) {
         throw new Error("Only text or html can be set but both are set.");
     }
 
-    await resend.emails.send({
-    from: `${sender}@${fromDomain}`,
-    to: to,
-    cc: cc,
-    bcc: bcc,
-    replyTo: replyTo,
-    subject: subject,
-    text: text,
-    html: html
-    });
+    if (sendToSeparately) {
+      for (const email in to) {
+        console.log(`Emailing ${email}`);
+        await resend.emails.send({
+          from: `${sender}@${fromDomain}`,
+          to: to,
+          replyTo: replyTo,
+          subject: subject,
+          text: text,
+          html: html
+       });  
+      }
+    } else {
+      await resend.emails.send({
+        from: `${sender}@${fromDomain}`,
+        to: to,
+        cc: cc,
+        bcc: bcc,
+        replyTo: replyTo,
+        subject: subject,
+        text: text,
+        html: html
+      });
+    }
 } catch (error) {
   core.setFailed(error.message);
 }
