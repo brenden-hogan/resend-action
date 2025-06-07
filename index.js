@@ -12,7 +12,7 @@ try {
     const cc = parseArrayString(core.getInput('cc-array'), true);
     const text = parseString(core.getInput('text', true));
     const html = parseString(core.getInput('html'), true);
-    const sendToSeparately = (core.getInput('send-to-separately').trim.toLowerCase() === 'true');
+    const sendToSeparately = (core.getInput('send-to-separately').trim().toLowerCase() === 'true');
     const resend = new Resend(resendApiKey);
 
     if (text && html) {

@@ -27405,7 +27405,7 @@ try {
     const cc = parseArrayString(_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('cc-array'), true);
     const text = parseString(_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('text', true));
     const html = parseString(_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('html'), true);
-    const sendToSeparately = (_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('send-to-separately').trim.toLowerCase() === 'true');
+    const sendToSeparately = (_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('send-to-separately').trim().toLowerCase() === 'true');
     const resend = new resend__WEBPACK_IMPORTED_MODULE_0__/* .Resend */ .u(resendApiKey);
 
     if (text && html) {
