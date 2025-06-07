@@ -20,11 +20,11 @@ try {
     }
 
     if (sendToSeparately) {
-      for (const email in to) {
-        console.log(`Emailing ${email}`);
+      for (const email of to) {
+        console.log(`Emailing: ${email}`);
         await resend.emails.send({
           from: `${sender}@${fromDomain}`,
-          to: to,
+          to: email,
           replyTo: replyTo,
           subject: subject,
           text: text,
