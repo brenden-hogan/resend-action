@@ -1,0 +1,38 @@
+name: 'resend-action'
+description: 'Sends an email using Resend'
+inputs:
+  api-key:
+    description: 'Resend API Key. Keep this in a Secret.'
+    required: true
+  from-domain:
+    description: 'Domain of the sender. This must be verified with Resend. Ex: github.com'
+    required: true
+  sender:
+    description: 'Resend API Key. Keep this in a Secret.'
+    required: true
+    default: "no-reply"
+  subject:
+    description: 'Subject of the email.'
+    required: true
+    default: "Notice"
+  to-array:
+    description: 'Who to send the email to, at least one is required but multiple separated by commas can be provided.'
+    required: true
+  reply-to-array:
+    description: 'Comma separated reply-to list.'
+    required: false
+  bcc-array:
+    description: 'Comma separated bcc list.'
+    required: false
+  cc-array:
+    description: 'Comma separated cc list.'
+    required: false
+  text:
+    description: 'Text to send. Only include this or html, not both.'
+    required: false
+  html:
+    description: 'HTML to send. Only include this or text, not both.'
+    required: false
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
