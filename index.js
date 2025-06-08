@@ -25,7 +25,7 @@ try {
     console.log('Dry run flag set! No email will actually be sent.')
   }
 
-  console.log(`Emails will be sent by: ${sender}@${fromDomain} with replyTo: ${replyTo.join(', ')}`)
+  console.log(`Emails will be sent by: ${sender}@${fromDomain} with replyTo: ${prettyPrint(replyTo)}`)
   console.log(`Subject will be: ${subject}`)
 
   if (scheduledAt) {
@@ -48,9 +48,9 @@ try {
       }
     }
   } else {
-    console.log(`Sending email to: ${to.join(', ')}`)
-    console.log(`Sending email cc: ${cc.join(', ')}`)
-    console.log(`Sending email bcc: ${bcc.join(', ')}`)
+    console.log(`Sending email to: ${prettyPrint(to)}`)
+    console.log(`Sending email cc: ${prettyPrint(cc)}`)
+    console.log(`Sending email bcc: ${prettyPrint(bcc)}`)
     if (!dryRun) {
       await resend.emails.send({
         from: `${sender}@${fromDomain}`,
@@ -67,6 +67,17 @@ try {
   }
 } catch (error) {
   core.setFailed(error.message)
+}
+
+function prettyPrint(value) {
+  if (!value) {
+    return 'N/A'
+  }
+
+  if (Array.isArray(value)) {
+    return value.join(', ')
+  }
+  return value
 }
 
 function parseString(str, optional) {
