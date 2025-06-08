@@ -1,0 +1,3 @@
+pnpm run commit-hook
+stg refresh --no-verify --index
+stg refresh --no-verify

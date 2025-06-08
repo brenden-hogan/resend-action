@@ -1,5 +1,5 @@
 name: 'resend-action'
-description: 'Sends an email using Resend'
+description: 'Sends an email using Resend. See full API spec at: https://resend.com/docs/api-reference/emails/send-email'
 inputs:
   api-key:
     description: 'Resend API Key. Keep this in a Secret.'
@@ -10,18 +10,18 @@ inputs:
   sender:
     description: 'Resend API Key. Keep this in a Secret.'
     required: true
-    default: "no-reply"
+    default: 'no-reply'
   subject:
     description: 'Subject of the email.'
     required: true
-    default: "Notice"
+    default: 'Notice'
   to-array:
     description: 'Who to send the email to, at least one is required but multiple separated by commas can be provided.'
     required: true
   send-to-separately:
     description: 'If set to true then emails in the to array will each receive a separate email. BCC and CC are ignored in this case'
     required: true
-    default: "false"
+    default: 'false'
   reply-to-array:
     description: 'Comma separated reply-to list.'
     required: false
@@ -30,6 +30,12 @@ inputs:
     required: false
   cc-array:
     description: 'Comma separated cc list.'
+    required: false
+  scheduled-at:
+    description: 'Schedule the email at a later time using iso8601 or natural language.'
+    required: false
+  dry-run:
+    description: 'If set to true the API call will not be made only logging will occur.'
     required: false
   text:
     description: 'Text to send. Only include this or html, not both.'

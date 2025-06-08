@@ -1,6 +1,15 @@
 # Resend-Action
 
-This is a Github action to send a Resend email. Functionality to be expand at a later time.
+This is a Github action to send a Resend email.
+
+See the full API spec at: https://resend.com/docs/api-reference/emails/send-email
+
+## Unsupported options at this time
+
+- react
+- headers
+- attachments
+- tags
 
 ## Example usage
 

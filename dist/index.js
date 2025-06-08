@@ -27395,36 +27395,56 @@ __nccwpck_require__.a(__webpack_module__, async (__webpack_handle_async_dependen
 
 
 try {
-    const resendApiKey = parseString(_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('api-key'), false);
-    const fromDomain = parseString(_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('from-domain'), false);
-    const sender = parseString(_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('sender'), false);
-    const subject = parseString(_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('subject'), false);
-    const to = parseArrayString(_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('to-array'), false);
-    const replyTo = parseArrayString(_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('reply-to-array'), true);
-    const bcc = parseArrayString(_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('bcc-array'), true);
-    const cc = parseArrayString(_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('cc-array'), true);
-    const text = parseString(_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('text', true));
-    const html = parseString(_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('html'), true);
-    const sendToSeparately = (_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('send-to-separately').trim().toLowerCase() === 'true');
-    const resend = new resend__WEBPACK_IMPORTED_MODULE_0__/* .Resend */ .u(resendApiKey);
+  const resendApiKey = parseString(_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('api-key'), false)
+  const fromDomain = parseString(_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('from-domain'), false)
+  const sender = parseString(_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('sender'), false)
+  const subject = parseString(_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('subject'), false)
+  const to = parseArrayString(_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('to-array'), false)
+  const replyTo = parseArrayString(_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('reply-to-array'), true)
+  const bcc = parseArrayString(_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('bcc-array'), true)
+  const cc = parseArrayString(_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('cc-array'), true)
+  const text = parseString(_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('text', true))
+  const html = parseString(_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('html'), true)
+  const sendToSeparately = _actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('send-to-separately').trim().toLowerCase() === 'true'
+  const scheduledAt = parseString(_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('scheduled-at'), true)
+  const dryRun = _actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('dry-run').trim().toLowerCase() === 'true'
+  const resend = new resend__WEBPACK_IMPORTED_MODULE_0__/* .Resend */ .u(resendApiKey)
 
-    if (text && html) {
-        throw new Error("Only text or html can be set but both are set.");
-    }
+  if (text && html) {
+    throw new Error('Only text or html can be set but both are set.')
+  }
 
-    if (sendToSeparately) {
-      for (const email of to) {
-        console.log(`Emailing: ${email}`);
+  if (dryRun) {
+    console.log('Dry run flag set! No email will actually be sent.')
+  }
+
+  console.log(`Emails will be sent by: ${sender}@${fromDomain} with replyTo: ${replyTo.join(', ')}`)
+  console.log(`Subject will be: ${subject}`)
+
+  if (scheduledAt) {
+    console.log(`Email will be delayed and sent using value: ${scheduledAt}`)
+  }
+
+  if (sendToSeparately) {
+    for (const email of to) {
+      console.log(`Sending email to: ${email}`)
+      if (!dryRun) {
         await resend.emails.send({
           from: `${sender}@${fromDomain}`,
           to: email,
           replyTo: replyTo,
           subject: subject,
+          scheduledAt: scheduledAt,
           text: text,
-          html: html
-       });  
+          html: html,
+        })
       }
-    } else {
+    }
+  } else {
+    console.log(`Sending email to: ${to.join(', ')}`)
+    console.log(`Sending email cc: ${cc.join(', ')}`)
+    console.log(`Sending email bcc: ${bcc.join(', ')}`)
+    if (!dryRun) {
       await resend.emails.send({
         from: `${sender}@${fromDomain}`,
         to: to,
@@ -27432,52 +27452,55 @@ try {
         bcc: bcc,
         replyTo: replyTo,
         subject: subject,
+        scheduledAt: scheduledAt,
         text: text,
-        html: html
-      });
+        html: html,
+      })
     }
+  }
 } catch (error) {
-  _actions_core__WEBPACK_IMPORTED_MODULE_1__.setFailed(error.message);
+  _actions_core__WEBPACK_IMPORTED_MODULE_1__.setFailed(error.message)
 }
 
 function parseString(str, optional) {
   if (!str || str.trim() === '') {
     if (!optional) {
-        throw new Error("Required value was not included");
+      throw new Error('Required value was not included')
     }
-    return undefined;
+    return undefined
   }
 
-  return str.trim();
+  return str.trim()
 }
 
 function parseArrayString(str, optional) {
   // Handle empty string
   if (!str || str.trim() === '') {
     if (!optional) {
-        throw new Error("Required value was not included");
+      throw new Error('Required value was not included')
     }
-    return undefined;
+    return undefined
   }
-  
+
   // Split by comma and trim whitespace from each element
-  const elements = str.split(',').map(element => element.trim());
-  
+  const elements = str.split(',').map((element) => element.trim())
+
   // Filter out empty elements (in case of extra commas)
-  const validElements = elements.filter(element => element !== '');
-  
+  const validElements = elements.filter((element) => element !== '')
+
   // Return based on number of valid elements
   if (validElements.length === 0) {
     if (!optional) {
-        throw new Error("Required value was not included");
+      throw new Error('Required value was not included')
     }
-    return undefined;
+    return undefined
   } else if (validElements.length === 1) {
-    return validElements[0];
+    return validElements[0]
   } else {
-    return validElements;
+    return validElements
   }
 }
+
 __webpack_async_result__();
 } catch(e) { __webpack_async_result__(e); } }, 1);
 
