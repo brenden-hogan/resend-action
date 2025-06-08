@@ -27505,8 +27505,6 @@ function parseArrayString(str, optional) {
       throw new Error('Required value was not included')
     }
     return undefined
-  } else if (validElements.length === 1) {
-    return validElements[0]
   } else {
     return validElements
   }
