@@ -27403,7 +27403,7 @@ try {
   const replyTo = parseArrayString(_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('reply-to-array'), true)
   const bcc = parseArrayString(_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('bcc-array'), true)
   const cc = parseArrayString(_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('cc-array'), true)
-  const text = parseString(_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('text', true))
+  const text = parseString(_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('text'), true)
   const html = parseString(_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('html'), true)
   const sendToSeparately = _actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('send-to-separately').trim().toLowerCase() === 'true'
   const scheduledAt = parseString(_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('scheduled-at'), true)

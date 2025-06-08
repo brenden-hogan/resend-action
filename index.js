@@ -10,7 +10,7 @@ try {
   const replyTo = parseArrayString(core.getInput('reply-to-array'), true)
   const bcc = parseArrayString(core.getInput('bcc-array'), true)
   const cc = parseArrayString(core.getInput('cc-array'), true)
-  const text = parseString(core.getInput('text', true))
+  const text = parseString(core.getInput('text'), true)
   const html = parseString(core.getInput('html'), true)
   const sendToSeparately = core.getInput('send-to-separately').trim().toLowerCase() === 'true'
   const scheduledAt = parseString(core.getInput('scheduled-at'), true)
