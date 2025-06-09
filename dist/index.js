@@ -27408,7 +27408,7 @@ try {
   const sendToSeparately = _actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('send-to-separately').trim().toLowerCase() === 'true'
   const scheduledAt = parseString(_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('scheduled-at'), true)
   const dryRun = _actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('dry-run').trim().toLowerCase() === 'true'
-  const emailDelay = Number(_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('delay')).isNaN() ? 1000 : Number(_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('delay'))
+  const emailDelay = isNaN(Number(_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('delay'))) ? 1000 : Number(_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('delay'))
   const resend = new resend__WEBPACK_IMPORTED_MODULE_0__/* .Resend */ .u(resendApiKey)
 
   if (text && html) {

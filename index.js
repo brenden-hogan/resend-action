@@ -15,7 +15,7 @@ try {
   const sendToSeparately = core.getInput('send-to-separately').trim().toLowerCase() === 'true'
   const scheduledAt = parseString(core.getInput('scheduled-at'), true)
   const dryRun = core.getInput('dry-run').trim().toLowerCase() === 'true'
-  const emailDelay = Number(core.getInput('delay')).isNaN() ? 1000 : Number(core.getInput('delay'))
+  const emailDelay = isNaN(Number(core.getInput('delay'))) ? 1000 : Number(core.getInput('delay'))
   const resend = new Resend(resendApiKey)
 
   if (text && html) {
