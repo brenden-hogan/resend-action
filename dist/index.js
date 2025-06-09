@@ -27408,6 +27408,7 @@ try {
   const sendToSeparately = _actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('send-to-separately').trim().toLowerCase() === 'true'
   const scheduledAt = parseString(_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('scheduled-at'), true)
   const dryRun = _actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('dry-run').trim().toLowerCase() === 'true'
+  const emailDelay = Number(_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('delay')).isNaN() ? 1000 : Number(_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('delay'))
   const resend = new resend__WEBPACK_IMPORTED_MODULE_0__/* .Resend */ .u(resendApiKey)
 
   if (text && html) {
@@ -27429,7 +27430,7 @@ try {
     for (const email of to) {
       console.log(`Sending email to: ${email}`)
       if (!dryRun) {
-        await resend.emails.send({
+        const resp = await resend.emails.send({
           from: `${sender}@${fromDomain}`,
           to: email,
           replyTo: replyTo,
@@ -27438,6 +27439,12 @@ try {
           text: text,
           html: html,
         })
+
+        await sleep(emailDelay)
+
+        if (resp.error && resp.error.name) {
+          console.log(`Issue occurred when sending email: ${resp.error.name}`)
+        }
       }
     }
   } else {
@@ -27445,7 +27452,7 @@ try {
     console.log(`Sending email cc: ${prettyPrint(cc)}`)
     console.log(`Sending email bcc: ${prettyPrint(bcc)}`)
     if (!dryRun) {
-      await resend.emails.send({
+      const resp = await resend.emails.send({
         from: `${sender}@${fromDomain}`,
         to: to,
         cc: cc,
@@ -27456,10 +27463,18 @@ try {
         text: text,
         html: html,
       })
+
+      if (resp.error && resp.error.name) {
+        console.log(`Issue occurred when sending email: ${resp.error.name}`)
+      }
     }
   }
 } catch (error) {
   _actions_core__WEBPACK_IMPORTED_MODULE_1__.setFailed(error.message)
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
 function prettyPrint(value) {

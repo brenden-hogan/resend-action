@@ -20,8 +20,12 @@ inputs:
     required: true
   send-to-separately:
     description: 'If set to true then emails in the to array will each receive a separate email. BCC and CC are ignored in this case'
-    required: true
+    required: false
     default: 'false'
+  delay:
+    description: 'When using send-to-separately several emails will be sent. This can quickly hit the Resend rate limit. This delay in milliseconds will be enforced between emails.'
+    required: false
+    default: '1000'
   reply-to-array:
     description: 'Comma separated reply-to list.'
     required: false

@@ -15,6 +15,7 @@ try {
   const sendToSeparately = core.getInput('send-to-separately').trim().toLowerCase() === 'true'
   const scheduledAt = parseString(core.getInput('scheduled-at'), true)
   const dryRun = core.getInput('dry-run').trim().toLowerCase() === 'true'
+  const emailDelay = Number(core.getInput('delay')).isNaN() ? 1000 : Number(core.getInput('delay'))
   const resend = new Resend(resendApiKey)
 
   if (text && html) {
@@ -36,7 +37,7 @@ try {
     for (const email of to) {
       console.log(`Sending email to: ${email}`)
       if (!dryRun) {
-        await resend.emails.send({
+        const resp = await resend.emails.send({
           from: `${sender}@${fromDomain}`,
           to: email,
           replyTo: replyTo,
@@ -45,6 +46,12 @@ try {
           text: text,
           html: html,
         })
+
+        await sleep(emailDelay)
+
+        if (resp.error && resp.error.name) {
+          console.log(`Issue occurred when sending email: ${resp.error.name}`)
+        }
       }
     }
   } else {
@@ -52,7 +59,7 @@ try {
     console.log(`Sending email cc: ${prettyPrint(cc)}`)
     console.log(`Sending email bcc: ${prettyPrint(bcc)}`)
     if (!dryRun) {
-      await resend.emails.send({
+      const resp = await resend.emails.send({
         from: `${sender}@${fromDomain}`,
         to: to,
         cc: cc,
@@ -63,10 +70,18 @@ try {
         text: text,
         html: html,
       })
+
+      if (resp.error && resp.error.name) {
+        console.log(`Issue occurred when sending email: ${resp.error.name}`)
+      }
     }
   }
 } catch (error) {
   core.setFailed(error.message)
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
 function prettyPrint(value) {
